@@ -1,10 +1,7 @@
-export default function getSumOfHoods(initialNumber = undefined, expansion1989 = undefined, expansion2019 = undefined) {
-  if (expansion1989 === undefined) {
-    expansion1989 = 89;
-  }
-
-  if (expansion2019 === undefined) {
-    expansion2019 = 19;
-  }
-  return initialNumber + expansion1989 + expansion2019;
+export default function getSumOfHoods(initialNumber = undefined,
+  expansion1989 = undefined,
+  expansion2019 = undefined) {
+  const expansion1989Value = (expansion1989 === undefined) ? 89 : expansion1989;
+  const expansion2019Value = (expansion2019 === undefined) ? 19 : expansion2019;
+  return initialNumber + expansion1989Value + expansion2019Value;
 }
