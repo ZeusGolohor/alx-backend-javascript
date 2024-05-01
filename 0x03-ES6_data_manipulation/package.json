@@ -15,6 +15,5 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.17.0",
     "jest": "^24.9.0"
-  },
-   "type": "module"
+  }
 }
