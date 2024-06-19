@@ -1,12 +1,14 @@
 const fs = require('fs');
 
 function countStudents(filePath) {
+  try {
     const fileData = fs.readFileSync(filePath, 'utf8');
     const lines = fileData.trim().split('\n');
     let totalStudents = 0;
     let csStudentsList = [];
     let sweStudentsList = [];
     lines.forEach(line => {
+      // Split the line by ',' to get fields
       const [firstName, lastName, age, field] = line.split(',');
       if (firstName && lastName && age && field) {
         // Count the student
@@ -26,3 +28,5 @@ function countStudents(filePath) {
     throw new Error('Cannot load the database');
   }
 }
+
+module.exports = countStudents;
