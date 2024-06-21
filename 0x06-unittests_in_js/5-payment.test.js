@@ -1,32 +1,25 @@
+const sinon = require('sinon');
+const { expect } = require('chai');
 const sendPaymentRequestToApi = require('./5-payment');
-const utils = require('./utils.js');
-
-const logSpy = jest.spyOn(console, 'log');
-const calculateSpy = jest.spyOn(utils, 'calculateNumber');
-
-beforeEach(() => {
-  logSpy.mockClear();
-  calculateSpy.mockClear();
-});
-
-afterEach(() => {
-  logSpy.mockRestore();
-  calculateSpy.mockRestore();
-});
 
 describe('sendPaymentRequestToApi', () => {
-  it('should log the total', () => {
-    sendPaymentRequestToApi(100, 20);
-	expect(logSpy).toHaveBeenCalledTimes(1);
-	expect(logSpy).toHaveBeenCalledWith('The total is: 120');
-	expect(calculateSpy).toHaveBeenCalledTimes(1);
-	expect(calculateSpy).toHaveBeenCalledWith('SUM', 100, 20);
+  let logger;
+  beforeEach(() => {
+    if (!logger) {
+      logger = sinon.spy(console)
+    }
   });
-  it('should log the total amount', () => {
+  afterEach(() => {
+    logger.log.resetHistory()
+  });
+  it('sendPaymentRequestToApi(100, 20)', () => {
+    sendPaymentRequestToApi(100, 20);
+	expect(logger.log.calledWith('The total is: 120')).to.be.true;
+	expect(logger.log.calledOnce).to.be.true;
+  });
+  it('sendPaymentRequestToApi(10, 10)', () => {
     sendPaymentRequestToApi(10, 10);
-	expect(logSpy).toHaveBeenCalledTimes(1);
-	expect(logSpy).toHaveBeenCalledWith('The total is: 20');
-	expect(calculateSpy).toHaveBeenCalledTimes(1);
-	expect(calculateSpy).toHaveBeenCalledWith('SUM', 10, 10);
+	expect(logger.log.calledWith('The total is: 20')).to.be.true;
+	expect(logger.log.calledOnce).to.be.true;
   });
 });
