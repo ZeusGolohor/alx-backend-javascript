@@ -16,9 +16,9 @@ app.get('/available_payments', (_req, res) => {
 app.post('/login', (req, res) => {
   let user = '';
   if (req.body) {
-    user = req.body.userName;
+    user = req.body.user;
   }
-  res.send(`Welcome ${username}`);
+  res.send(`Welcome ${user}`);
 });
 app.listen(PORT, () => {
   console.log(`API available on localhost port ${PORT}`);
