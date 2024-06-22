@@ -1,32 +1,45 @@
-const fs = require('fs');
+const { readFile } = require('fs');
 
-function countStudents(filePath) {
+function countStudents(fileName) {
+  const students = {};
+  const fields = {};
+  let totalStudents = 0;
+
   return new Promise((resolve, reject) => {
-    fs.readFile(filePath, 'utf8', (err, fileData) => {
-      if (err) {
-        reject(new Error('Cannot load the database'));
-        return;
-      }
-      const lines = fileData.trim().split('\n');
-      let totalStudents = 0;
-      let csStudents = [];
-      let sweStudents = [];
-      lines.forEach(line => {
-        const [firstName, lastName, age, field] = line.split(',');
-        if (firstName && lastName && age && field) {
-          // Count the student
-          totalStudents++;
-          if (field.trim() === 'CS') {
-            csStudents.push(firstName.trim());
-          } else if (field.trim() === 'SWE') {
-            sweStudents.push(firstName.trim());
+    readFile(fileName, (error, data) => {
+      if (error) {
+        reject(Error('Cannot load the database'));
+      } else {
+        const lines = data.toString().split('\n');
+        for (let i = 0; i < lines.length; i += 1) {
+          if (lines[i]) {
+            totalStudents += 1;
+            const fieldsArray = lines[i].toString().split(',');
+            const firstname = fieldsArray[0].trim();
+            const field = fieldsArray[3].trim();
+
+            if (Object.prototype.hasOwnProperty.call(students, field)) {
+              students[field].push(firstname);
+            } else {
+              students[field] = [firstname];
+            }
+
+            if (Object.prototype.hasOwnProperty.call(fields, field)) {
+              fields[field] += 1;
+            } else {
+              fields[field] = 1;
+            }
           }
         }
-      });
-      console.log(`Number of students: ${totalStudents}`);
-      console.log(`Number of students in CS: ${csStudents.length}. List: ${csStudents.join(', ')}`);
-      console.log(`Number of students in SWE: ${sweStudents.length}. List: ${sweStudents.join(', ')}`);
-      resolve();
+        const studentCount = totalStudents - 1;
+        console.log(`Number of students: ${studentCount}`);
+        for (const [key, value] of Object.entries(fields)) {
+          if (key !== 'field') {
+            console.log(`Number of students in ${key}: ${value}. List: ${students[key].join(', ')}`);
+          }
+        }
+        resolve();
+      }
     });
   });
 }
