@@ -18,7 +18,7 @@ async function countStudents(dataPath) {
     const header = lines[0].split(',');
     const studentPropNames = header.slice(0, header.length - 1);
 
-    for (let i = 1; i < lines.length; i = i + 1) {
+    for (let i = 1; i < lines.length; i += 1) {
       const line = lines[i];
       const fields = line.split(',');
       const field = fields[fields.length - 1];
@@ -27,7 +27,7 @@ async function countStudents(dataPath) {
       }
 
       const student = {};
-      for (let j = 0; j < studentPropNames.length; j = j + 1) {
+      for (let j = 0; j < studentPropNames.length; j += 1) {
         student[studentPropNames[j].trim()] = fields[j].trim();
       }
       studentGroups[field].push(student);
@@ -61,7 +61,7 @@ const app = http.createServer((req, res) => {
       .then((report) => {
         res.end(report);
       })
-      .catch((err) => {
+      .catch(() => {
         res.statusCode = 404;
         res.end('Cannot load the database');
       });
