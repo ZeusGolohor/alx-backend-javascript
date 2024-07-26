@@ -51,24 +51,23 @@ async function countStudents(dataPath) {
 }
 
 const app = http.createServer((req, res) => {
+  res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
 
   if (req.url === '/') {
-    res.statusCode = 200;
-    res.end('Hello Holberton School!');
-  } else if (req.url === '/students') {
+    res.write('Hello Holberton School!');
+    res.end()
+  }
+  if (req.url === '/students') {
+    res.write('This is the list of our students\n');
     countStudents(DB_FILE)
       .then(report => {
-        res.statusCode = 200;
-        res.end(`This is the list of our students\n${report}`);
+        res.end(report);
       })
       .catch(err => {
-        res.statusCode = 500;
+        res.statusCode = 404;
         res.end('Cannot load the database');
       });
-  } else {
-    res.statusCode = 404;
-    res.end('Not Found');
   }
 });
 
