@@ -18,7 +18,7 @@ async function countStudents(dataPath) {
     const header = lines[0].split(',');
     const studentFields = header.slice(0, header.length - 1);
 
-    for (let i = 1; i < lines.length; i++) {
+    for (let i = 1; i < lines.length; i += 1) {
       const line = lines[i];
       const fields = line.split(',');
       const field = fields[fields.length - 1];
@@ -28,7 +28,7 @@ async function countStudents(dataPath) {
       }
 
       const student = {};
-      for (let j = 0; j < studentFields.length; j++) {
+      for (let j = 0; j < studentFields.length; j += 1) {
         student[studentFields[j].trim()] = fields[j].trim();
       }
       studentGroups[field].push(student);
@@ -37,9 +37,9 @@ async function countStudents(dataPath) {
     const reportParts = [];
     const totalStudents = lines.length - 1;
     reportParts.push(`Number of students: ${totalStudents}`);
-    
+
     for (const [field, students] of Object.entries(studentGroups)) {
-      const studentList = students.map(student => student.firstname).join(', ');
+      const studentList = students.map((student) => student.firstname).join(', ');
       reportParts.push(`Number of students in ${field}: ${students.length}. List: ${studentList}`);
     }
 
@@ -57,7 +57,7 @@ app.get('/students', async (_, res) => {
   try {
     const report = await countStudents(DB_FILE);
     const responseParts = [`This is the list of our students\n${report}`];
-    
+
     res.setHeader('Content-Type', 'text/plain');
     res.setHeader('Content-Length', Buffer.byteLength(responseParts.join('\n')));
     res.status(200).send(responseParts.join('\n'));
