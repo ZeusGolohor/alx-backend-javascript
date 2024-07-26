@@ -22,7 +22,7 @@ async function countStudents(dataPath) {
       const line = lines[i];
       const fields = line.split(',');
       const field = fields[fields.length - 1];
-      
+
       if (!studentGroups[field]) {
         studentGroups[field] = [];
       }
