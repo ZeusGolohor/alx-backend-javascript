@@ -1,6 +1,5 @@
 const http = require('http');
 const fs = require('fs').promises;
-const path = require('path');
 
 const PORT = 1245;
 const HOST = 'localhost';
@@ -19,17 +18,16 @@ async function countStudents(dataPath) {
     const header = lines[0].split(',');
     const studentPropNames = header.slice(0, header.length - 1);
 
-    for (let i = 1; i < lines.length; i++) {
+    for (let i = 1; i < lines.length; i = i + 1) {
       const line = lines[i];
       const fields = line.split(',');
       const field = fields[fields.length - 1];
-      
       if (!studentGroups[field]) {
         studentGroups[field] = [];
       }
 
       const student = {};
-      for (let j = 0; j < studentPropNames.length; j++) {
+      for (let j = 0; j < studentPropNames.length; j = j + 1) {
         student[studentPropNames[j].trim()] = fields[j].trim();
       }
       studentGroups[field].push(student);
@@ -38,9 +36,8 @@ async function countStudents(dataPath) {
     const reportParts = [];
     const totalStudents = lines.length - 1;
     reportParts.push(`Number of students: ${totalStudents}`);
-    
     for (const [field, students] of Object.entries(studentGroups)) {
-      const studentList = students.map(student => student.firstname).join(', ');
+      const studentList = students.map((student) => student.firstname).join(', ');
       reportParts.push(`Number of students in ${field}: ${students.length}. List: ${studentList}`);
     }
 
@@ -56,15 +53,15 @@ const app = http.createServer((req, res) => {
 
   if (req.url === '/') {
     res.write('Hello Holberton School!');
-    res.end()
+    res.end();
   }
   if (req.url === '/students') {
     res.write('This is the list of our students\n');
     countStudents(DB_FILE)
-      .then(report => {
+      .then((report) => {
         res.end(report);
       })
-      .catch(err => {
+      .catch((err) => {
         res.statusCode = 404;
         res.end('Cannot load the database');
       });
