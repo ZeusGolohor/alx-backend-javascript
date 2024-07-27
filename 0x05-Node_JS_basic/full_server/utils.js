@@ -13,8 +13,7 @@ module.exports = function readStudentData(filePath) {
           if (dataLines[i]) {
             const fields = dataLines[i].toString().split(',');
             const studentId = fields[3];
-            // if (studentRecords.hasOwnProperty(studentId)) {
-            if (object.hasOwnProperty.call(studentRecords, studentId)) {
+            if (studentRecords.hasOwnProperty(studentId)) {
               studentRecords[studentId].push(fields[0]);
             } else {
               studentRecords[studentId] = [fields[0]];
